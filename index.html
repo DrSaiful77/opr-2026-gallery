@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPR REPOSITORI 2026 — Sekolah Kebangsaan Ru Rendang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F6F1;
+    --paper-raised:#FFFFFF;
+    --ink:#1E2A28;
+    --ink-soft:#5B6A64;
+    --line:#DAD9CE;
+    --brass:#A9822E;
+    --brass-soft:#EFE4C8;
+    --teal:#2F6F63;
+    --teal-deep:#1E4842;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+
+  /* ---------- Header ---------- */
+  header{
+    padding:64px 32px 40px;
+    max-width:1200px;
+    margin:0 auto;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow-row{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    color:var(--teal-deep);
+    font-size:14px;
+    letter-spacing:.02em;
+    margin-bottom:18px;
+  }
+  .eyebrow-row .dot{width:6px;height:6px;border-radius:50%;background:var(--brass);}
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(34px,5vw,54px);
+    line-height:1.05;
+    margin:0 0 14px;
+    max-width:14ch;
+  }
+  header p.sub{
+    max-width:56ch;
+    color:var(--ink-soft);
+    font-size:16px;
+    line-height:1.6;
+    margin:0;
+  }
+  .index-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:32px;
+  }
+  .index-strip a{
+    text-decoration:none;
+    font-size:14px;
+    padding:9px 16px;
+    border-radius:100px;
+    border:1px solid var(--line);
+    color:var(--ink);
+    background:var(--paper-raised);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .index-strip a:hover{border-color:var(--teal);background:var(--brass-soft);}
+  .index-strip .count{color:var(--ink-soft);margin-left:6px;}
+
+  /* ---------- Month sections ---------- */
+  main{max-width:1200px;margin:0 auto;padding:0 32px 100px;}
+  section.month{
+    padding-top:56px;
+    scroll-margin-top:24px;
+  }
+  .month-head{
+    display:flex;
+    align-items:flex-end;
+    gap:16px;
+    margin-bottom:28px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--line);
+  }
+  .month-head .num{
+    font-family:'Fraunces',serif;
+    font-size:15px;
+    color:var(--brass);
+    border:1px solid var(--brass);
+    border-radius:50%;
+    width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .month-head h2{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:26px;
+    margin:0;
+  }
+  .month-head .tally{
+    color:var(--ink-soft);
+    font-size:14px;
+    margin-left:auto;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:26px;
+  }
+  .card{
+    cursor:pointer;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 24px rgba(30,42,40,.10);
+    border-color:var(--teal);
+  }
+  .thumb-wrap{
+    aspect-ratio:4/3;
+    background:var(--brass-soft);
+    overflow:hidden;
+    position:relative;
+  }
+  .thumb-wrap img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .thumb-wrap .missing{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;color:var(--brass);
+    text-align:center;padding:12px;
+    font-family:'Inter',sans-serif;
+  }
+  .card-body{padding:14px 16px 16px;}
+  .card-body .title{
+    font-size:14.5px;
+    font-weight:600;
+    line-height:1.4;
+    margin:0 0 6px;
+  }
+  .card-body .date{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin:0;
+  }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox{
+    position:fixed;inset:0;
+    background:rgba(18,24,23,.92);
+    display:none;
+    align-items:center;justify-content:center;
+    z-index:100;
+    padding:40px 24px;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox-inner{
+    max-width:1000px;
+    width:100%;
+    max-height:90vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .lightbox-inner img{
+    max-width:100%;
+    max-height:70vh;
+    object-fit:contain;
+    border-radius:2px;
+    background:#00000022;
+  }
+  .lightbox-caption{
+    color:#F5F6F1;
+    text-align:center;
+    margin-top:18px;
+  }
+  .lightbox-caption .title{
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    margin:0 0 6px;
+  }
+  .lightbox-caption .date{
+    font-size:13.5px;
+    color:#C8CFCB;
+    margin:0;
+  }
+  .lb-close, .lb-prev, .lb-next{
+    position:fixed;
+    background:none;
+    border:1px solid rgba(245,246,241,.35);
+    color:#F5F6F1;
+    border-radius:50%;
+    width:44px;height:44px;
+    font-size:18px;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s ease;
+  }
+  .lb-close:hover, .lb-prev:hover, .lb-next:hover{background:rgba(245,246,241,.12);}
+  .lb-close{top:24px;right:24px;}
+  .lb-prev{left:24px;top:50%;transform:translateY(-50%);}
+  .lb-next{right:24px;top:50%;transform:translateY(-50%);}
+  @media (max-width:640px){
+    .lb-prev{left:8px;}
+    .lb-next{right:8px;}
+  }
+
+  footer{
+    text-align:center;
+    padding:36px 20px 60px;
+    color:var(--ink-soft);
+    font-size:13px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow-row"><span class="dot"></span> Indeks Laporan Program &middot; SK Ru Rendang</div>
+  <h1>OPR REPOSITORI 2026</h1>
+  <p class="sub">Koleksi One Page Report bagi program dan aktiviti sekolah sepanjang tahun 2026. Klik mana-mana gambar untuk lihat versi penuh.</p>
+  <nav class="index-strip" id="indexStrip"></nav>
+</header>
+
+<main id="main"></main>
+
+<footer>Sekolah Kebangsaan Ru Rendang, 21600 Marang, Terengganu</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose" aria-label="Tutup">✕</button>
+  <button class="lb-prev" id="lbPrev" aria-label="Sebelum">‹</button>
+  <button class="lb-next" id="lbNext" aria-label="Seterus">›</button>
+  <div class="lightbox-inner">
+    <img id="lbImage" src="" alt="">
+    <div class="lightbox-caption">
+      <p class="title" id="lbTitle"></p>
+      <p class="date" id="lbDate"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = [
+  { month: "Februari 2026", items: [
+    { file: "220226.jpg", title: "Majlis Pelancaran Program Ihya Ramadan 2026", date: "12 Februari 2026" },
+    { file: "050426.jpg", title: "Pertandingan Batik Rainbow Tie-Dye (dgn Noor Arfa Batik)", date: "26 Februari 2026" },
+  ]},
+  { month: "Mac 2026", items: [
+    { file: "030326.jpg", title: "Program Nuzul Al-Quran (PPIM)", date: "3 Mac 2026" },
+    { file: "110326.jpg", title: "PLC Panitia Bahasa Inggeris Bil. 1", date: "10 Mac 2026" },
+    { file: "180426.jpg", title: "Mesyuarat Agung PIBG", date: "31 Mac 2026" },
+  ]},
+  { month: "April 2026", items: [
+    { file: "060426a.png", title: "Sambutan Hari Raya Aidilfitri (2)", date: "6 April 2026" },
+    { file: "060426b.png", title: "Sambutan Hari Raya Aidilfitri (1)", date: "6 April 2026" },
+    { file: "090426a.png", title: "Pertandingan Robot Sumo 500g RC — Johan Peringkat Negeri", date: "8 April 2026" },
+    { file: "090426b.png", title: "Pameran PBL-STEAM 4.0 Peringkat Negeri", date: "8 April 2026" },
+    { file: "030526a.jpg", title: "Perjumpaan Ibu Bapa Murid Pemulihan Tahap 2 (Thn 4)", date: "12 April 2026" },
+    { file: "150426.png", title: "Pertandingan Catur MSSD Marang", date: "13 April 2026" },
+    { file: "160426a.jpg", title: "Kursus Pengurusan Tatatertib (Integriti)", date: "15 April 2026" },
+    { file: "160426b.jpg", title: "Pelaksanaan Program AlFatihahku", date: "16 April 2026" },
+    { file: "200426.jpg", title: "Pertandingan Adab dan Nilai (ADNI) Zon 3", date: "19 April 2026" },
+    { file: "230426.png", title: "Dialog Prestasi Tahun 4", date: "22 April 2026" },
+    { file: "220426.jpg", title: "Aktiviti Program Ihya' Ramadan 1447H/2026M", date: "Sepanjang bulan Ramadan" },
+    { file: "030526.jpg", title: "PLC Analisis Data & Intervensi Akademik", date: "29 April 2026" },
+  ]},
+  { month: "Mei 2026", items: [
+    { file: "100526.jpg", title: "OPR PPKI: Sentuhan Selamat dan Tidak Selamat", date: "3 Mei 2026" },
+    { file: "050526.jpg", title: "Perjumpaan Ibu Bapa Murid Pemulihan Tahap 2 (Thn 6)", date: "4 Mei 2026" },
+    { file: "110626.jpg", title: "Taklimat Penilaian Bersepadu Pegawai (PBPPP)", date: "4 Mei 2026" },
+    { file: "050526b.jpg", title: "Program Sukses 5.0 — Karnival Pendidikan Kerjaya Murid", date: "5 Mei 2026" },
+    { file: "060526.jpg", title: "Bengkel Canva Book Design 2026", date: "5 Mei 2026" },
+    { file: "080526.jpg", title: "PdPc Berkelompok Program Al-Fatihahku", date: "5 Mei 2026" },
+    { file: "060526a.png", title: "Pelancaran NILAM & Kempen Galakan Membaca (Ana Muslim)", date: "6 Mei 2026" },
+    { file: "060526b.jpg", title: "Pelancaran NILAM & Kempen Galakan Membaca (Ana Muslim)", date: "6 Mei 2026" },
+  ]},
+  { month: "Jun 2026", items: [
+    { file: "280626.jpg", title: "Kursus Penggunaan Noen Smart Projector", date: "16 Jun 2026" },
+    { file: "150626.jpg", title: "Bengkel Verifikasi Data BMI dan SEGAK", date: "18 Jun 2026" },
+  ]},
+];
+
+// Flatten for lightbox prev/next navigation across the whole set
+const FLAT = DATA.flatMap(section => section.items.map(item => ({...item, month: section.month})));
+
+const mainEl = document.getElementById('main');
+const indexStrip = document.getElementById('indexStrip');
+
+DATA.forEach((section, sIdx) => {
+  const anchorId = 'm' + sIdx;
+
+  const pill = document.createElement('a');
+  pill.href = '#' + anchorId;
+  pill.innerHTML = section.month + '<span class="count"> · ' + section.items.length + '</span>';
+  indexStrip.appendChild(pill);
+
+  const sectionEl = document.createElement('section');
+  sectionEl.className = 'month';
+  sectionEl.id = anchorId;
+
+  sectionEl.innerHTML = `
+    <div class="month-head">
+      <span class="num">${sIdx + 1}</span>
+      <h2>${section.month}</h2>
+      <span class="tally">${section.items.length} laporan</span>
+    </div>
+    <div class="grid"></div>
+  `;
+
+  const gridEl = sectionEl.querySelector('.grid');
+
+  section.items.forEach((item) => {
+    const flatIndex = FLAT.findIndex(f => f.file === item.file && f.title === item.title);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="thumb-wrap">
+        <img src="images/${item.file}" alt="${item.title}"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="missing" style="display:none;">Letakkan ${item.file} dalam folder /images</div>
+      </div>
+      <div class="card-body">
+        <p class="title">${item.title}</p>
+        <p class="date">Tarikh Hantar: ${item.date}</p>
+      </div>
+    `;
+    card.addEventListener('click', () => openLightbox(flatIndex));
+    gridEl.appendChild(card);
+  });
+
+  mainEl.appendChild(sectionEl);
+});
+
+// ---------- Lightbox logic ----------
+const lightbox = document.getElementById('lightbox');
+const lbImage = document.getElementById('lbImage');
+const lbTitle = document.getElementById('lbTitle');
+const lbDate = document.getElementById('lbDate');
+let currentIndex = 0;
+
+function openLightbox(index){
+  currentIndex = index;
+  render();
+  lightbox.classList.add('open');
+}
+function render(){
+  const item = FLAT[currentIndex];
+  lbImage.src = 'images/' + item.file;
+  lbImage.alt = item.title;
+  lbTitle.textContent = item.title;
+  lbDate.textContent = 'Tarikh Hantar: ' + item.date;
+}
+function closeLightbox(){ lightbox.classList.remove('open'); }
+function next(){ currentIndex = (currentIndex + 1) % FLAT.length; render(); }
+function prev(){ currentIndex = (currentIndex - 1 + FLAT.length) % FLAT.length; render(); }
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbNext').addEventListener('click', next);
+document.getElementById('lbPrev').addEventListener('click', prev);
+lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', (e) => {
+  if(!lightbox.classList.contains('open')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowRight') next();
+  if(e.key === 'ArrowLeft') prev();
+});
+</script>
+
+</body>
+</html>
